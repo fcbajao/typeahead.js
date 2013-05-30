@@ -47,6 +47,9 @@
       <div class="typeahead-wrapper">
         <input class="header-footer" type="text" placeholder="header footer">
       </div>
+      <div class="typeahead-wrapper">
+        <input class="default-item" type="text" placeholder="default item">
+      </div>
     </div>
 
     <script>
@@ -155,6 +158,18 @@
           local: ['abc', 'bcd', 'cde', 'def', 'efg']
         }
       ]);
+
+      $('.default-item').typeahead({
+        default: {
+          value: 'Default',
+          foo: 1
+        },
+        local: [
+          {
+            value: 'Awesomesauce'
+          }
+        ]
+      });
 
       $('input').on([
         'typeahead:initialized',

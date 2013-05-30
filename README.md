@@ -56,6 +56,23 @@ $('input.typeahead-devs').typeahead({
   local: ['timtrueman', 'JakeHarding', 'vskarich']
 });
 
+// dataset with default item as string
+$('input.typeahead-devs').typeahead({
+  name: 'accounts',
+  default: 'everyone',
+  local: ['timtrueman', 'JakeHarding', 'vskarich']
+});
+
+// dataset with default item as an object
+$('input.typeahead-devs').typeahead({
+  name: 'accounts',
+  default: {
+    value: 'everyone',
+    foo: 1
+  },
+  local: ['timtrueman', 'JakeHarding', 'vskarich']
+});
+
 // multiple datasets
 $('input.twitter-search').typeahead([
   {
@@ -112,6 +129,8 @@ When defining a dataset, the following options are available:
 * `prefetch` – Can be a URL to a JSON file containing an array of datums or, if more configurability is needed, a [prefetch options object][prefetch].
 
 * `remote` – Can be a URL to fetch suggestions from when the data provided by `local` and `prefetch` is insufficient or, if more configurability is needed, a [remote options object][remote].
+
+* `default` – Default item that will always show up on top of the list. Can be a an Object or a String.
 
 ### Datum
 

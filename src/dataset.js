@@ -31,6 +31,8 @@ var Dataset = (function() {
     this.valueKey = o.valueKey || 'value';
     this.template = compileTemplate(o.template, o.engine, this.valueKey);
 
+    this.default = o.default || null;
+
     // used then deleted in #initialize
     this.local = o.local;
     this.prefetch = o.prefetch;
@@ -119,9 +121,7 @@ var Dataset = (function() {
       if (utils.isString(datum)) {
         item.datum = {};
         item.datum[this.valueKey] = datum;
-      }
-
-      else {
+      } else {
         item.datum = datum;
       }
 
@@ -136,6 +136,24 @@ var Dataset = (function() {
       });
 
       return item;
+    },
+
+    _transformDefaultItem: function(rawItem) {
+      var value = utils.isString(rawItem) ? rawItem : rawItem[this.valueKey],
+          item = { value: value };
+
+      if (utils.isString(rawItem)) {
+        item.datum = {};
+        item.datum[this.valueKey] = rawItem;
+      } else {
+        item.datum = rawItem;
+      }
+
+      return item;
+    },
+
+    _processDefaultItem: function(item) {
+      this.default = this._transformDefaultItem(item);
     },
 
     _processData: function(data) {
@@ -166,12 +184,14 @@ var Dataset = (function() {
       utils.mixin(this.itemHash, processedData.itemHash);
 
       // merge adjacency list
-      utils.each(processedData.adjacencyList, function(character, adjacency) {
-        var masterAdjacency = that.adjacencyList[character];
+      if (!utils.isUndefined(processedData.adjacencyList)) {
+        utils.each(processedData.adjacencyList, function(character, adjacency) {
+          var masterAdjacency = that.adjacencyList[character];
 
-        that.adjacencyList[character] = masterAdjacency ?
-          masterAdjacency.concat(adjacency) : adjacency;
-      });
+          that.adjacencyList[character] = masterAdjacency ?
+            masterAdjacency.concat(adjacency) : adjacency;
+        });
+      }
     },
 
     _getLocalSuggestions: function(terms) {
@@ -235,6 +255,7 @@ var Dataset = (function() {
     initialize: function() {
       var deferred;
 
+      this.default && this._processDefaultItem(this.default);
       this.local && this._processLocalData(this.local);
       this.transport = this.remote ? new Transport(this.remote) : null;
 
@@ -258,6 +279,9 @@ var Dataset = (function() {
 
       terms = utils.tokenizeQuery(query);
       suggestions = this._getLocalSuggestions(terms).slice(0, this.limit);
+
+      // prepend default item into suggestions if there's one
+      this.default && suggestions.unshift(this.default);
 
       if (suggestions.length < this.limit && this.transport) {
         cacheHit = this.transport.get(query, processRemoteData);

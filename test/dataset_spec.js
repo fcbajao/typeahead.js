@@ -443,7 +443,7 @@ describe('Dataset', function() {
   });
 
   describe('with datum objects', function() {
-    var fixtureData = [{ value: 'course-106' }];
+    var fixtureData = [{ value: 'course-106' }, { value: 'default-course', sticky: true }];
 
     beforeEach(function() {
       this.dataset = new Dataset({ local: fixtureData });
@@ -457,6 +457,54 @@ describe('Dataset', function() {
 
       this.dataset.getSuggestions('course-106', function(items) {
         expect(items).toEqual([]);
+      });
+    });
+  });
+
+  describe('with default item', function() {
+    var localData = [{ value: 'course' }];
+
+    describe('when default item is a string', function() {
+      beforeEach(function() {
+        this.dataset = new Dataset({ default: 'default', local: localData });
+        this.dataset.initialize();
+      });
+
+      it('returns default data', function() {
+        var defaultItem = {
+          value: 'default',
+          datum: { value: 'default' }
+        };
+
+        this.dataset.getSuggestions('course', function(items) {
+          expect(items).toEqual([defaultItem, createItem('course')]);
+        });
+
+        this.dataset.getSuggestions('foo', function(items) {
+          expect(items).toEqual([defaultItem]);
+        });
+      });
+    });
+
+    describe('when default item is an object', function() {
+      beforeEach(function() {
+        this.dataset = new Dataset({ default: {value: 'default', foo: 1}, local: localData });
+        this.dataset.initialize();
+      });
+
+      it('returns default data', function() {
+        var defaultItem = {
+          value: 'default',
+          datum: { value: 'default', foo: 1 }
+        };
+
+        this.dataset.getSuggestions('course', function(items) {
+          expect(items).toEqual([defaultItem, createItem('course')]);
+        });
+
+        this.dataset.getSuggestions('foo', function(items) {
+          expect(items).toEqual([defaultItem]);
+        });
       });
     });
   });
