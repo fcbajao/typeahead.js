@@ -311,9 +311,9 @@ describe('Dataset', function() {
         this.dataset.initialize();
       });
 
-      it('should be a noop', function() {
+      it('should call callback and pass an empty array', function() {
         this.dataset.getSuggestions('co', this.spy);
-        expect(this.spy).not.toHaveBeenCalled();
+        expect(this.spy).toHaveBeenCalledWith([]);
       });
     });
   });

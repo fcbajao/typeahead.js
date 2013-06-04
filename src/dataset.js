@@ -274,6 +274,9 @@ var Dataset = (function() {
 
       // don't do anything until the minLength constraint is met
       if (query.length < this.minLength) {
+        // just give an empty list so that the suggestions list will be empty
+        // since we don't clear the suggestion on every query change now
+        cb && cb([]);
         return;
       }
 

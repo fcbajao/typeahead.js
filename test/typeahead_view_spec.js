@@ -205,11 +205,6 @@ describe('TypeaheadView', function() {
       expect(this.inputView.setHintValue).toHaveBeenCalledWith('');
     });
 
-    it('should clear suggestions', function() {
-      this.inputView.trigger('queryChanged');
-      expect(this.dropdownView.clearSuggestions).toHaveBeenCalled();
-    });
-
     describe('if query is a blank string', function() {
       beforeEach(function() {
         this.inputView.getQuery.andReturn('  ');
