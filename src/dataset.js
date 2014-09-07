@@ -31,7 +31,7 @@ var Dataset = (function() {
     this.valueKey = o.valueKey || 'value';
     this.template = compileTemplate(o.template, o.engine, this.valueKey);
 
-    this.default = o.default || null;
+    this.defaultItem = o.defaultItem || null;
 
     // used then deleted in #initialize
     this.local = o.local;
@@ -153,7 +153,7 @@ var Dataset = (function() {
     },
 
     _processDefaultItem: function(item) {
-      this.default = this._transformDefaultItem(item);
+      this.defaultItem = this._transformDefaultItem(item);
     },
 
     _processData: function(data) {
@@ -255,7 +255,7 @@ var Dataset = (function() {
     initialize: function() {
       var deferred;
 
-      this.default && this._processDefaultItem(this.default);
+      this.defaultItem && this._processDefaultItem(this.defaultItem);
       this.local && this._processLocalData(this.local);
       this.transport = this.remote ? new Transport(this.remote) : null;
 
@@ -284,7 +284,7 @@ var Dataset = (function() {
       suggestions = this._getLocalSuggestions(terms).slice(0, this.limit);
 
       // prepend default item into suggestions if there's one
-      this.default && suggestions.unshift(this.default);
+      this.defaultItem && suggestions.unshift(this.defaultItem);
 
       if (suggestions.length < this.limit && this.transport) {
         cacheHit = this.transport.get(query, processRemoteData);

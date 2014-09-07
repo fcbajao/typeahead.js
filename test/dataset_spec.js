@@ -466,7 +466,7 @@ describe('Dataset', function() {
 
     describe('when default item is a string', function() {
       beforeEach(function() {
-        this.dataset = new Dataset({ default: 'default', local: localData });
+        this.dataset = new Dataset({ defaultItem: 'default', local: localData });
         this.dataset.initialize();
       });
 
@@ -488,7 +488,7 @@ describe('Dataset', function() {
 
     describe('when default item is an object', function() {
       beforeEach(function() {
-        this.dataset = new Dataset({ default: {value: 'default', foo: 1}, local: localData });
+        this.dataset = new Dataset({ defaultItem: {value: 'default', foo: 1}, local: localData });
         this.dataset.initialize();
       });
 

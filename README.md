@@ -59,14 +59,14 @@ $('input.typeahead-devs').typeahead({
 // dataset with default item as string
 $('input.typeahead-devs').typeahead({
   name: 'accounts',
-  default: 'everyone',
+  defaultItem: 'everyone',
   local: ['timtrueman', 'JakeHarding', 'vskarich']
 });
 
 // dataset with default item as an object
 $('input.typeahead-devs').typeahead({
   name: 'accounts',
-  default: {
+  defaultItem: {
     value: 'everyone',
     foo: 1
   },
@@ -130,7 +130,7 @@ When defining a dataset, the following options are available:
 
 * `remote` – Can be a URL to fetch suggestions from when the data provided by `local` and `prefetch` is insufficient or, if more configurability is needed, a [remote options object][remote].
 
-* `default` – Default item that will always show up on top of the list. Can be a an Object or a String.
+* `defaultItem` – Default item that will always show up on top of the list. Can be a an Object or a String.
 
 ### Datum
 
